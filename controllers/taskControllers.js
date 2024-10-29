@@ -1,5 +1,6 @@
 const {IncomingForm }=require('formidable')
 const { readTaskToFile, writeTasksToFile } = require("../utils/fileHandler")
+//this GetTask
 
 exports.getTasks=(req,res)=>{
     const tasks=readTaskToFile();
@@ -7,6 +8,7 @@ exports.getTasks=(req,res)=>{
     res.end(JSON.stringify(tasks))
 
 }
+//this is CreateTask
 exports.createTask=(req,res)=>{
     const form=new IncomingForm();
     form.parse(req,(err,fields,files)=>{
@@ -38,6 +40,18 @@ exports.createTask=(req,res)=>{
     })
 
 }
+//this updateTask
+exports.updateTask=(req,res)=>{
+    res.end(JSON.stringify({
+        message:'Not Yet implemented'
+    }))
+}
+//this DeleteTask
+exports.deleteTask=(req,res)=>{
+    res.end(JSON.stringify({
+        message:'Not Yet implemented'
+    }))
 
+}
 
 
