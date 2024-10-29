@@ -1,7 +1,7 @@
 const { log } = require('console');
 const http = require('http');
 const { json } = require('stream/consumers');
-const PORT =9000;
+const PORT =3000;
 const HOSTNAME='localhost';
 
 const server=http.createServer( (req,res)=>{
