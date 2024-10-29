@@ -1,24 +1,19 @@
 const { log } = require('console');
 const http = require('http');
-const { json } = require('stream/consumers');
-const PORT =3000;
-const HOSTNAME='localhost';
+const PORT = 3000;
+const HOSTNAME = 'localhost';
 
-const server=http.createServer( (req,res)=>{
-    if(req.url.startsWith('./task')){
-        //Todo:Implement this method
-    }
-    else{
-        res.writable(404,'not found',{'count-type':'application/js'})
-        res.end(json.stringify({
-            message:'PAGE '
-        }))
+const server = http.createServer((req, res) => {
+    if (req.url.startsWith('/tasks')) {
+        // TODO: Implement this method to handle /tasks
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'Tasks endpoint hit' }));
+    } else {
+        res.writeHead(404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'PAGE NOT FOUND' }));
     }
 });
 
-server.listen(PORT,HOSTNAME,()=>{
-    console.log(`server running at ${PORT}`);
-    
-
-
-})
+server.listen(PORT, HOSTNAME, () => {
+    console.log(`Server running at ${HOSTNAME}:${PORT}`);
+});
