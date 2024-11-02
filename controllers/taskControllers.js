@@ -1,58 +1,47 @@
-const {IncomingForm }=require('formidable')
-const { readTaskToFile, writeTasksToFile } = require("../utils/fileHandler")
-//this GetTask
+const { IncomingForm } = require('formidable');
+const { readTasksFromFile, writeTasksToFile } = require("../utils/fileHandler");
 
-exports.getTasks=(req,res)=>{
-    const tasks=readTaskToFile();
-    res.writeHead(200,{'content-type':'application/json'});
-    res.end(JSON.stringify(tasks))
+// Get all tasks
+exports.getTasks = (req, res) => {
+    const tasks = readTasksFromFile();
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(tasks));
+};
 
-}
-//this is CreateTask
-exports.createTask=(req,res)=>{
-    const form=new IncomingForm();
-    form.parse(req,(err,fields,files)=>{
-        if(err){
-            res.writeHead(400,{'content-type':'application/json'})
-            res.end(JSON.stringify({
-                message:'error parsing form'
-            }))
+// Create a new task
+exports.createTask = (req, res) => {
+    const form = new IncomingForm();
+    form.parse(req, (err, fields, files) => {
+        if (err) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ message: 'Error parsing form' }));
             return;
-            
         }
-        const tasks=readTasksFromFile()
-        const NewTasks={
+
+        const tasks = readTasksFromFile();
+        const newTask = {
             id: Date.now(),
-            title:fields.title,
-            description:fields?.description || '',
-            status:fields?.status || 'pending',
-            Image:fields.Image? `/uploads/${files.Image.name}`: null,
-
-        }
-        tasks.push(NewTasks);
-        
+            title: fields.title,
+            description: fields.description || '',
+            status: fields.status || 'pending',
+            image: files.Image ? `/uploads/${files.Image.name}` : null,
+        };
+        tasks.push(newTask);
         writeTasksToFile(tasks);
-         if(files.Image){
-            copyFileSync(files.Image.path,path.join(__dirname,'../uploads',  files.Image.name));
-            res.end(JSON.stringify(NewTasks))
 
-         }
-    })
+        res.writeHead(201, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(newTask));
+    });
+};
 
-}
-//this updateTask
-exports.updateTask=(req,res)=>{
-    res.end(JSON.stringify({
-        message:'Not Yet implemented'
-    }))
-}
-//this DeleteTask
-exports.deleteTask=(req,res)=>{
-    res.end(JSON.stringify({
-        message:'Not Yet implemented'
-    }))
+// Update an existing task
+exports.updateTask = (req, res) => {
+    res.writeHead(501, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: 'UpdateTask not implemented yet' }));
+};
 
-}
-
-
-
+// Delete a task
+exports.deleteTask = (req, res) => {
+    res.writeHead(501, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: 'DeleteTask not implemented yet' }));
+};
