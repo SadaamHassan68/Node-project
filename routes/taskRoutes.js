@@ -8,7 +8,7 @@ const taskRoutes = (req, res) => {
     } else if (req.method === 'PATCH') {
         updateTask(req, res);
     } else if (req.method === 'DELETE') {
-        deleteTask(req, res);
+        deleteTask(req, res);w
     } else {
         res.writeHead(404, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({

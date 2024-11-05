@@ -17,6 +17,7 @@ exports.createTask = (req, res) => {
             res.end(JSON.stringify({ message: 'Error parsing form' }));
             return;
         }
+        const image=files.image[0]
 
         const tasks = readTasksFromFile();
         const newTask = {
@@ -24,13 +25,17 @@ exports.createTask = (req, res) => {
             title: fields.title,
             description: fields.description || '',
             status: fields.status || 'pending',
-            image: files.Image ? `/uploads/${files.Image.name}` : null,
+            image: image ? `/uploads/${image.originalFilename}` : null,
         };
         tasks.push(newTask);
-        writeTasksToFile(tasks);
 
-        res.writeHead(201, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(newTask));
+        writeTasksToFile(tasks);
+        if(files.image){
+            copyFileSync(image.filepath,path.join(__dirname,'../uploads',image.originalFilename));
+            res.end(JSON.stringify(newTask));
+        }
+
+       
     });
 };
 
